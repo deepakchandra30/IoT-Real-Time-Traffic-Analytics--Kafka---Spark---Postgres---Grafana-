@@ -1,0 +1,83 @@
+<mxfile host="app.diagrams.net" agent="...">
+  <diagram id="iot-architecture" name="IoT Real-Time Analytics Architecture">
+    <mxGraphModel dx="1571" dy="1659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="iot-layer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1" value="IoT Sensor Layer&#xa;(12 Traffic Sensors)&#xa;Dublin Locations" vertex="1">
+          <mxGeometry height="80" width="240" x="340" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" edge="1" parent="1" source="iot-layer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;fontSize=12;" target="kafka-layer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1-label" connectable="0" parent="arrow1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;" value="JSON Events&#xa;~20 events/sec" vertex="1">
+          <mxGeometry relative="1" x="-0.1" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kafka-layer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1" value="Message Queue Layer&#xa;Apache Kafka&#xa;Topic: traffic_iot" vertex="1">
+          <mxGeometry height="80" width="240" x="340" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" edge="1" parent="1" source="kafka-layer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;fontSize=12;" target="spark-layer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2-label" connectable="0" parent="arrow2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;" value="Stream&#xa;Consumption" vertex="1">
+          <mxGeometry relative="1" x="-0.1" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="spark-layer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1" value="Stream Processing Layer&#xa;Spark Structured Streaming" vertex="1">
+          <mxGeometry height="60" width="320" x="300" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="spark-clean" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Data Cleaning" vertex="1">
+          <mxGeometry height="40" width="90" x="310" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="spark-window" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Windowing" vertex="1">
+          <mxGeometry height="40" width="90" x="410" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="spark-agg" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Aggregation" vertex="1">
+          <mxGeometry height="40" width="90" x="510" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="spark-anomaly" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" value="Anomaly&#xa;Detection" vertex="1">
+          <mxGeometry height="50" width="90" x="310" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="spark-watermark" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="Watermarking" vertex="1">
+          <mxGeometry height="50" width="90" x="410" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="spark-sink" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="JDBC Sink" vertex="1">
+          <mxGeometry height="50" width="90" x="510" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow3" edge="1" parent="1" source="spark-layer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;fontSize=12;" target="postgres-layer">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="460" y="500" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="arrow3-label" connectable="0" parent="arrow3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;" value="Batch Writes&#xa;(micro-batches)" vertex="1">
+          <mxGeometry relative="1" x="-0.1" y="2" as="geometry">
+            <mxPoint x="-7" y="58" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="postgres-layer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;fontStyle=1" value="Storage Layer&#xa;PostgreSQL 16" vertex="1">
+          <mxGeometry height="60" width="240" x="340" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres-tables" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" value="• traffic_agg_1m&#xa;• traffic_agg_5m&#xa;• traffic_anomalies" vertex="1">
+          <mxGeometry height="50" width="220" x="350" y="605" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow4" edge="1" parent="1" source="postgres-layer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;fontSize=12;" target="grafana-layer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow4-label" connectable="0" parent="arrow4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;" value="SQL Queries" vertex="1">
+          <mxGeometry relative="1" x="-0.1" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="grafana-layer" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=14;fontStyle=1" value="Visualization Layer&#xa;Grafana 11.2&#xa;Auto-provisioned Dashboard" vertex="1">
+          <mxGeometry height="80" width="240" x="340" y="700" as="geometry" />
+        </mxCell>
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" value="IoT Real-Time Traffic Analytics Architecture&#xa;(Kafka + Spark Structured Streaming + PostgreSQL + Grafana)" vertex="1">
+          <mxGeometry height="30" width="440" x="240" y="-10" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

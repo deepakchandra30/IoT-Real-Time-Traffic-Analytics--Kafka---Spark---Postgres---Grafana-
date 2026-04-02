@@ -1,0 +1,76 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres-Traffic" },
+      "description": "Average speed (km/h) per sensor (1-minute windows).",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "targets": [
+        {
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT window_start AS time, sensor_id AS metric, speed_avg AS value\nFROM traffic_agg_1m\nWHERE $__timeFilter(window_start)\nORDER BY window_start;",
+          "refId": "A"
+        }
+      ],
+      "title": "Speed Avg (1m) by Sensor",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres-Traffic" },
+      "description": "Sum of vehicles per sensor (1-minute windows).",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 10 },
+      "id": 2,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" } },
+      "targets": [
+        {
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT window_start AS time, sensor_id AS metric, vehicles_sum AS value\nFROM traffic_agg_1m\nWHERE $__timeFilter(window_start)\nORDER BY window_start;",
+          "refId": "A"
+        }
+      ],
+      "title": "Vehicle Count Sum (1m) by Sensor",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "Postgres-Traffic" },
+      "description": "Detected anomalies (|z| >= 3).",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 20 },
+      "id": 3,
+      "options": {
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "event_time" }]
+      },
+      "targets": [
+        {
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT event_time, sensor_id, location, avg_speed_kmh, vehicle_count, occupancy_pct, speed_z, reason\nFROM traffic_anomalies\nWHERE $__timeFilter(event_time)\nORDER BY event_time DESC\nLIMIT 200;",
+          "refId": "A"
+        }
+      ],
+      "title": "Anomalies",
+      "type": "table"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["iot", "streaming", "traffic"],
+  "templating": { "list": [] },
+  "time": { "from": "now-30m", "to": "now" },
+  "timezone": "",
+  "title": "IoT Traffic Streaming Analytics",
+  "version": 1
+}
