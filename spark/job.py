@@ -93,7 +93,7 @@ def main():
                  ))
 
         query = (agged.writeStream
-                 .outputMode("update")
+                 .outputMode("append")
                  .foreachBatch(lambda df, epoch_id: write_batch(df, table))
                  .option("checkpointLocation", f"/tmp/chk_{table}")
                  .start())
