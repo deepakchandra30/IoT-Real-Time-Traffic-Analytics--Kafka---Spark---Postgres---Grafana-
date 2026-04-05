@@ -121,15 +121,15 @@ def main():
                 ))
 
     # Join each event to its 5-minute stats window (event_ts between w_start and w_end)
-    events_with_stats = (events
+    events_with_stats = (events_wm
                          .join(
                              stats_5m,
                              on=[
-                                 events.sensor_id == stats_5m.sensor_id,
-                                 events.location == stats_5m.location,
-                                 (events.event_ts >= stats_5m.w_start) & (events.event_ts < stats_5m.w_end)
+                                 events_wm.sensor_id == stats_5m.sensor_id,
+                                 events_wm.location == stats_5m.location,
+                                 (events_wm.event_ts >= stats_5m.w_start) & (events_wm.event_ts < stats_5m.w_end)
                              ],
-                             how="left"
+                             how="inner"
                          )
                          .drop(stats_5m.sensor_id)
                          .drop(stats_5m.location)

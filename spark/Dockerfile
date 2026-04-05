@@ -14,5 +14,6 @@ USER 185
 
 CMD ["/opt/spark/bin/spark-submit", \
   "--master", "local[*]", \
+  "--conf", "spark.jars.ivy=/tmp/.ivy", \
   "--packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.4.0,org.postgresql:postgresql:42.7.3", \
   "/opt/spark/job.py" ]
